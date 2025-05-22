@@ -4,3 +4,6 @@ Dockerfile
 
 .dockerignore
 .gitignore
+.git
+
+.env*

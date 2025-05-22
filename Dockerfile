@@ -1,21 +1,36 @@
-FROM node:22-alpine
+FROM node:24-alpine AS builder
 
-# Set working directory
 WORKDIR /backend
 
-# Install app dependencies
 COPY package*.json ./
 RUN npm install
 
-# Copy environment file and source code
-COPY .env .env
 COPY . .
 
-# Build the project
 RUN npm run build
 
-# Expose the port your Nest app runs on
+FROM node:24-alpine AS development
+
+WORKDIR /backend
+
+COPY package*.json ./
+RUN npm install
+
+COPY . .
+
 EXPOSE 3200
 
-# Start the NestJS app in production
+CMD ["npm", "run", "start:dev"]
+
+FROM node:24-alpine AS production
+
+WORKDIR /backend
+
+COPY package*.json ./
+RUN npm install --omit=dev --ignore-scripts
+
+COPY --from=builder /backend/dist /backend/dist
+
+EXPOSE 3200
+
 CMD ["npm", "run", "start:prod"]

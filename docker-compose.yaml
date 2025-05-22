@@ -3,14 +3,17 @@ services:
     build:
       context: ./
       dockerfile: Dockerfile
+      target: production
     env_file:
-      - .env
+      - .env.production.local
     ports:
       - '3200:3200'
     depends_on:
       - postgres
       - mongo
     restart: unless-stopped
+    networks:
+      - dz-network
 
   postgres:
     image: postgres:latest
@@ -24,6 +27,8 @@ services:
       - pgdata:/var/lib/postgresql/data
     ports:
       - '5432:5432'
+    networks:
+      - dz-network
 
   mongo:
     image: mongo:latest
@@ -32,13 +37,20 @@ services:
       - mongodata:/data/db
     ports:
       - '27017:27017'
+    networks:
+      - dz-network
 
   adminer:
     image: adminer
     restart: always
     ports:
       - 8085:8080
+    networks:
+      - dz-network
 
 volumes:
   pgdata:
   mongodata:
+
+networks:
+  dz-network:
