@@ -15,9 +15,9 @@ async function bootstrap() {
       transform: true,
     }),
   );
-  await app.listen(process.env.PORT ?? 3000);
+  await app.listen(process.env.BACKEND_PORT ?? 3000);
 
-  console.log(`Server is running on port ${process.env.PORT ?? 3000}`);
+  console.log(`Server is running on port ${process.env.BACKEND_PORT ?? 3000}`);
   console.log('!!!Server ready!!!');
   console.log('Have fun :)');
 }
