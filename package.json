@@ -41,6 +41,7 @@
     "class-validator": "^0.14.1",
     "cookie-parser": "^1.4.7",
     "dotenv": "^16.4.7",
+    "express-basic-auth": "^1.2.1",
     "graphql": "^16.10.0",
     "mongoose": "^8.12.1",
     "passport": "^0.7.0",
