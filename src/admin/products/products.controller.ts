@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { Body, Controller, Delete, Param, Post, Put } from '@nestjs/common';
 import { AdminService } from '../admin.service';
-import { CreateProductDto } from 'src/common/dto/product.dto';
+import { CreateProductDto, EditProductDto } from 'src/common/dto/product.dto';
 
 @Controller('admin/products')
 export class ProductsController {
@@ -13,12 +13,12 @@ export class ProductsController {
   }
 
   @Put(':id')
-  updateProduct(@Param('id') id: number) {
-    return this.adminService.updateProductById(id);
+  updateProduct(@Param('id') id: string, @Body() body: EditProductDto) {
+    return this.adminService.updateProductById(id, body);
   }
 
   @Delete(':id')
-  deleteProduct(@Param('id') id: number) {
+  deleteProduct(@Param('id') id: string) {
     return this.adminService.deleteProductById(id);
   }
 }

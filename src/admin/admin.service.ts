@@ -1,5 +1,9 @@
 /* eslint-disable prettier/prettier */
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Model } from 'mongoose';
@@ -80,12 +84,40 @@ export class AdminService {
     return newProduct;
   }
 
-  updateProductById(id: number) {
-    return `Update product with id ${id}`;
+  async updateProductById(id: string, body: Partial<CreateProductDto>) {
+    try {
+      const updatedProduct = await this.productModel.findOneAndUpdate(
+        { pid: id },
+        { ...body },
+        { new: true },
+      );
+
+      if (!updatedProduct) {
+        throw new NotFoundException(`Product not found`);
+      }
+
+      return updatedProduct;
+    } catch (err) {
+      console.error(err);
+      throw new InternalServerErrorException('Unable to update product');
+    }
   }
 
-  deleteProductById(id: number) {
-    return `Delete product with id ${id}`;
+  async deleteProductById(id: string) {
+    try {
+      const product = await this.productModel.findOneAndUpdate(
+        { pid: id },
+        { deleted: true },
+      );
+      if (product) {
+        return product;
+      } else {
+        throw new NotFoundException('Product not found');
+      }
+    } catch (err) {
+      console.error(err);
+      throw new InternalServerErrorException('Unable to process request');
+    }
   }
 
   async getAllOrders(paginationDto: PaginationDto) {
