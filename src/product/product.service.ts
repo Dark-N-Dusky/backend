@@ -12,10 +12,15 @@ export class ProductService {
   ) {}
 
   async findAll(): Promise<Product[]> {
-    return this.productModel.find().exec();
+    return this.productModel.find({ isDeleted: { $ne: true } }).exec();
   }
 
   async findOneByUid(pid: string): Promise<Product | null> {
-    return this.productModel.findOne({ pid }).exec();
+    const product = await this.productModel.findOne({ pid }).exec();
+    if (product?.isDeleted) {
+      return null;
+    } else {
+      return product;
+    }
   }
 }

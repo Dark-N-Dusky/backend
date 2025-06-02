@@ -107,7 +107,7 @@ export class AdminService {
     try {
       const product = await this.productModel.findOneAndUpdate(
         { pid: id },
-        { deleted: true },
+        { isDeleted: true },
       );
       if (product) {
         return product;

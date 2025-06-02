@@ -98,6 +98,12 @@ export class Product {
   @Field(() => [Faq], { nullable: true })
   @Prop({ type: [Faq], required: false })
   faq: Faq[];
+
+  @Prop({
+    required: false,
+    default: false,
+  })
+  isDeleted: boolean;
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product);
