@@ -19,6 +19,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { CartModule } from './cart/cart.module';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { NodemailerConfig } from './common/config/nodemailer.config';
+import { MailingModule } from './common/util/mailing/mailing.module';
 
 @Module({
   imports: [
@@ -48,6 +49,7 @@ import { NodemailerConfig } from './common/config/nodemailer.config';
     ReturnModule,
     OrderModule,
     CartModule,
+    MailingModule,
   ],
   controllers: [AppController],
   providers: [AppService],
