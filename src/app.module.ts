@@ -17,6 +17,8 @@ import { GraphQLConfig } from './common/config/graphql.config';
 import { OrderModule } from './order/order.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { CartModule } from './cart/cart.module';
+import { MailerModule } from '@nestjs-modules/mailer';
+import { NodemailerConfig } from './common/config/nodemailer.config';
 
 @Module({
   imports: [
@@ -31,6 +33,11 @@ import { CartModule } from './cart/cart.module';
     MongooseModule.forRootAsync({
       useFactory: (configService: ConfigService) =>
         MongooseConfig(configService),
+      inject: [ConfigService],
+    }),
+    MailerModule.forRootAsync({
+      useFactory: (configService: ConfigService) =>
+        NodemailerConfig(configService),
       inject: [ConfigService],
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>(GraphQLConfig),
