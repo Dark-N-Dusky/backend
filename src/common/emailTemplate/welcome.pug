@@ -1,0 +1,58 @@
+doctype html
+html
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title Welcome to DarkNDusky
+    style.
+      body, table, td, a {
+        font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+      }
+      @media screen and (max-width: 600px) {
+        .container {
+          width: 100% !important;
+          padding: 20px !important;
+        }
+        .cta-button {
+          display: block !important;
+          width: 100% !important;
+          text-align: center !important;
+        }
+      }
+  body(style="margin:0; padding:0; background-color:#f7f5f3; font-family: Arial, sans-serif;")
+    table(width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#f7f5f3")
+      tr
+        td(align="center")
+          // Main Container
+          table.container(width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px; background-color:#ffffff; border-radius:8px; overflow:hidden; margin:40px auto; box-shadow:0 0 8px rgba(0,0,0,0.05);")
+            
+            // Logo Section
+            tr
+              td(align="center" style="background-color:#1e1e1e; padding:30px;")
+                img(src="https://images.seeklogo.com/logo-png/51/2/dungeons-dragons-5th-edition-logo-png_seeklogo-517840.png", alt="Dark&Dusky Logo", width="150", style="display:block; width:150px; height:auto;")
+
+            // Welcome Content
+            tr
+              td(style="padding:30px; color:#333333; font-size:16px; line-height:1.6;")
+                h1(style="margin:0 0 15px 0; font-size:24px; color:#2c2c2c;") Welcome to Dark&Dusky
+                p(style="margin:0 0 15px 0;") Hi #{name},
+                p(style="margin:0 0 15px 0;")
+                  | We're excited to have you join our leather-loving community. At 
+                  strong
+                    em Dark&Dusky
+                  | , we craft timeless leather pieces that elevate your everyday style.
+                p(style="margin:0 0 20px 0;")
+                  | As a new member, you're getting early access to our collections, exclusive offers, and more.
+
+                // CTA Button
+                table(align="center" cellpadding="0" cellspacing="0" border="0" style="margin:0 auto;")
+                  tr
+                    td(align="center" bgcolor="#e28402" style="border-radius:5px;")
+                      a(href="https://yourstore.com/start-shopping" style="display:inline-block; padding:14px 24px; font-size:16px; color:#ffffff; text-decoration:none; font-weight:bold;" class="cta-button") Start Shopping
+
+            // Footer
+            tr
+              td(style="background-color:#f0ece9; text-align:center; padding:20px; font-size:13px; color:#888888;")
+                | &copy; 2025 Dark&Dusky. All rights reserved.
+                br
+                | Kanpur, India
