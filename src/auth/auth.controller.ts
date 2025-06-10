@@ -27,7 +27,7 @@ export class AuthController {
     return this.authService.logout(res);
   }
 
-  @Get('forgot-password')
+  @Post('forgot-password')
   forgotPassword(@Body() body: { email: string }) {
     return this.authService.forgotPassword(body.email);
   }

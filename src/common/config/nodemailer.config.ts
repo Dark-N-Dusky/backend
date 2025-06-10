@@ -2,6 +2,7 @@
 
 import { PugAdapter } from '@nestjs-modules/mailer/dist/adapters/pug.adapter';
 import { ConfigService } from '@nestjs/config';
+import * as path from 'path';
 
 export const NodemailerConfig = (configService: ConfigService) => {
   return {
@@ -17,7 +18,7 @@ export const NodemailerConfig = (configService: ConfigService) => {
       from: '"Support" <support@demo.com>',
     },
     template: {
-      dir: __dirname + '/common/emailTemplate',
+      dir: path.join(__dirname, '..', 'emailTemplate'),
       adapter: new PugAdapter(),
       options: {
         strict: true,
