@@ -18,6 +18,7 @@ import {
 } from 'src/common/dto/user.dto';
 import { User, UserDocument } from 'src/common/schema/user.schema';
 import { Response } from 'express';
+import { MailingService } from 'src/common/util/mailing/mailing.service';
 
 @Injectable()
 export class AuthService {
@@ -25,6 +26,7 @@ export class AuthService {
     @InjectModel(User.name)
     private readonly userModel: Model<UserDocument>,
     private readonly jwtService: JwtService,
+    private readonly mailingService: MailingService,
   ) {}
 
   async login(body: LoginUserDto, @Res() res: Response) {
@@ -77,6 +79,7 @@ export class AuthService {
       });
 
       await newUser.save();
+      await this.mailingService.sendWelcomeMail(newUser.email, newUser.name);
 
       return { message: 'User created successfully' };
     } else {
@@ -105,6 +108,12 @@ export class AuthService {
       type: 'password-reset',
       timestamp: new Date().toISOString(),
     });
+
+    await this.mailingService.sendPasswordResetMail(
+      user.email,
+      token,
+      user.name,
+    );
 
     return {
       message: 'Token sent to email',

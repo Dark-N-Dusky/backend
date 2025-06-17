@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -13,6 +14,7 @@ import { Product, ProductSchema } from 'src/common/schema/product.schema';
 import { Return } from 'src/common/entity/return.entity';
 import { Order } from 'src/common/entity/order.entity';
 import { OrderItem } from 'src/common/entity/orderItem.entity';
+import { CloudinaryService } from 'src/common/util/cloudinary/cloudinary.service';
 
 @Module({
   imports: [
@@ -30,6 +32,6 @@ import { OrderItem } from 'src/common/entity/orderItem.entity';
     ProductsController,
     ReturnsController,
   ],
-  providers: [AdminService],
+  providers: [AdminService, CloudinaryService],
 })
 export class AdminModule {}
