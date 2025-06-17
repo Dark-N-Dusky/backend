@@ -20,6 +20,7 @@ import { CartModule } from './cart/cart.module';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { NodemailerConfig } from './common/config/nodemailer.config';
 import { MailingModule } from './common/util/mailing/mailing.module';
+import { CloudinaryModule } from './common/util/cloudinary/cloudinary.module';
 
 @Module({
   imports: [
@@ -50,6 +51,7 @@ import { MailingModule } from './common/util/mailing/mailing.module';
     OrderModule,
     CartModule,
     MailingModule,
+    CloudinaryModule,
   ],
   controllers: [AppController],
   providers: [AppService],

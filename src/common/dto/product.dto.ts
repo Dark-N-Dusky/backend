@@ -1,23 +1,23 @@
 /* eslint-disable prettier/prettier */
 import { ApiProperty, PartialType } from '@nestjs/swagger';
-import { Type } from 'class-transformer';
+// import { Type } from 'class-transformer';
 import {
-  ArrayNotEmpty,
-  IsArray,
+  // ArrayNotEmpty,
+  // IsArray,
   IsNotEmpty,
   IsNumber,
-  IsNumberString,
+  // IsNumberString,
   IsString,
-  IsUrl,
-  ValidateNested,
+  // IsUrl,
+  // ValidateNested,
 } from 'class-validator';
 
-export class GallaryClassDto {
-  @ApiProperty()
-  @IsNotEmpty()
-  @IsUrl()
-  image_url: string;
-}
+// export class GallaryClassDto {
+//   @ApiProperty()
+//   @IsNotEmpty()
+//   @IsUrl()
+//   image_url: string;
+// }
 
 export class CreateProductDto {
   @ApiProperty()
@@ -30,12 +30,12 @@ export class CreateProductDto {
   @IsString()
   category: string;
 
-  @ApiProperty()
-  @IsNotEmpty()
-  @IsArray()
-  @ArrayNotEmpty()
-  @IsString({ each: true })
-  media: string[];
+  // @ApiProperty()
+  // @IsNotEmpty()
+  // @IsArray()
+  // @ArrayNotEmpty()
+  // @IsString({ each: true })
+  // media: string[];
 
   @ApiProperty()
   @IsNotEmpty()
@@ -59,15 +59,15 @@ export class CreateProductDto {
 
   @ApiProperty()
   @IsNotEmpty()
-  @IsNumberString()
+  @IsNumber()
   top_points: number;
 
-  @ApiProperty()
-  @IsNotEmpty()
-  @ArrayNotEmpty()
-  @ValidateNested({ each: true })
-  @Type(() => GallaryClassDto)
-  gallery: GallaryClassDto[];
+  // @ApiProperty()
+  // @IsNotEmpty()
+  // @ArrayNotEmpty()
+  // @ValidateNested({ each: true })
+  // @Type(() => GallaryClassDto)
+  // gallery: GallaryClassDto[];
 }
 
 export class EditProductDto extends PartialType(CreateProductDto) {}
