@@ -44,7 +44,17 @@ export class CartService {
     if (!user) {
       throw new NotFoundException('Invalid credentials');
     }
-    user.cart.push(body);
+
+    const existingItem = user.cart.find(
+      (item) => item.product_id.toString() === body.product_id.toString(),
+    );
+
+    if (existingItem) {
+      existingItem.quantity++;
+    } else {
+      user.cart.push(body);
+    }
+
     await user.save();
     return 'Item added to cart successfully';
   }
