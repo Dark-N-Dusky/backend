@@ -47,7 +47,9 @@ export class ProductsController {
         )
       ).filter((url): url is string => !!url);
 
-      const galleryMapped = galleryUrls.map((url) => ({ image_url: url }));
+      // Combine media URLs and gallery URLs
+      const allImageUrls = [...mediaUrls, ...galleryUrls];
+      const galleryMapped = allImageUrls.map((url) => ({ image_url: url }));
 
       const dtoObject = {
         ...body,
