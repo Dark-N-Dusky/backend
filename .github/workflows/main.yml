@@ -21,6 +21,12 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Debug build output
+        run: |
+          pwd
+          ls -la
+          ls -la dist || echo "dist folder does NOT exist"
+          
       - name: Build NestJS app
         run: npm run build
 
