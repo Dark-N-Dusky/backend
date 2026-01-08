@@ -62,4 +62,4 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             cd /home/ubuntu/backend
-            pm2 reload backend
+            /home/ubuntu/.nvm/versions/node/v24.11.1/bin/pm2 reload backend
