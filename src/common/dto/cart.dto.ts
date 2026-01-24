@@ -17,6 +17,11 @@ export class CartItemDto {
   @IsNotEmpty()
   @IsNumberString()
   quantity: number;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
+  sizeSelected?: string
 }
 
 export class EditCartItemDto {

@@ -17,6 +17,12 @@ export class OrderItem {
   product_id: string;
 
   @Column({
+    type: 'varchar',
+    nullable: true
+  })
+  selectedSize: string;
+
+  @Column({
     type: 'int',
   })
   order_id: number;

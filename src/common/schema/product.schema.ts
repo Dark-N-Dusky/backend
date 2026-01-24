@@ -12,6 +12,7 @@ export class GalleryItem {
   @Prop({ required: true })
   image_url: string;
 }
+
 @ObjectType()
 @Schema()
 export class Review {
@@ -82,6 +83,10 @@ export class Product {
   @Field()
   @Prop({ required: true })
   details: string;
+
+  @Field(() => [String], { nullable: true })
+  @Prop({ type: [String], required: false })
+  sizes: string[];
 
   @Field(() => [GalleryItem])
   @Prop({ type: [GalleryItem], required: true })
