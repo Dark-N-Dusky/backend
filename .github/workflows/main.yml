@@ -64,4 +64,4 @@ jobs:
           port: 2213
           script: |
             cd /home/ubuntu/backend
-            /home/ubuntu/.nvm/versions/node/v24.11.1/bin/pm2 reload backend
+            /home/ubuntu/.nvm/versions/node/v24.13.0/bin/pm2 reload backend
