@@ -22,7 +22,7 @@ export class MailingService {
     token: string,
     name: string,
   ): Promise<void> {
-    const resetUrl = `https://domain.com/forgot-password/reset/${token}`;
+    const resetUrl = `https://darkanddusky.com/forgot-password/reset/${token}`;
 
     await this.mailerService.sendMail({
       to,

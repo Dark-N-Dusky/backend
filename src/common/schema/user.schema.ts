@@ -96,11 +96,15 @@ export class User {
   @Prop({ required: true, unique: true })
   email: string;
 
-  @Field()
-  @Prop({ required: true })
+  @Field({ nullable: true })
+  @Prop()
   number: string;
-  @Prop({ required: true })
+  @Prop()
   password: string;
+
+  @Field({ nullable: true })
+  @Prop()
+  provider: string; // 'local' | 'google'
 
   @Field(() => String)
   @Prop({ enum: ['user', 'admin'], default: 'user' })
