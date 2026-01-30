@@ -23,7 +23,9 @@ jobs:
 
       # 3️⃣ Install ALL dependencies (CI machine, not EC2)
       - name: Install dependencies
-        run: npm ci
+        run: |
+          npm install
+          npm ci
 
       # 4️⃣ Build NestJS app
       - name: Build NestJS
