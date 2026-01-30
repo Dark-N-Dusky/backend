@@ -1,5 +1,6 @@
 /* eslint-disable prettier/prettier */
-import { ObjectType, Field, Int } from '@nestjs/graphql';
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+import { ObjectType, Field } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
@@ -32,7 +33,7 @@ export class Address {
   @Prop({ required: true })
   country: string;
 
-  @Field(() => Int)
+  @Field()
   @Prop({ required: true })
   code: number;
 
@@ -68,7 +69,7 @@ export class CartItem {
   @Prop({ required: true })
   product_id: string;
 
-  @Field(() => Int)
+  @Field()
   @Prop({ required: true })
   quantity: number;
 }
@@ -99,12 +100,22 @@ export class User {
   @Field()
   @Prop({ required: true })
   number: string;
-  @Prop({ required: true })
-  password: string;
+
+  @Field({ nullable: true })
+  @Prop({ required: false })
+  password?: string;
 
   @Field(() => String)
   @Prop({ enum: ['user', 'admin'], default: 'user' })
   role: 'user' | 'admin';
+
+  @Field(() => String)
+  @Prop({ enum: ['local', 'google'], default: 'local' })
+  auth_type: 'local' | 'google';
+
+  @Field({ nullable: true })
+  @Prop({ required: false })
+  google_id?: string;
 
   @Field({ nullable: true })
   @Prop()
