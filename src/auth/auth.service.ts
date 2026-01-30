@@ -32,7 +32,7 @@ export class AuthService {
   async login(body: LoginUserDto, @Res() res: Response) {
     const user = await this.userModel.findOne({ email: body.email }).exec();
 
-    if (!user) {
+    if (!user || !user.password) {
       throw new NotFoundException('User not found');
     }
 
@@ -146,5 +146,53 @@ export class AuthService {
     await user.save();
 
     return 'Password updated successfully';
+  }
+
+  async validateGoogleUser(googleUser: {
+    email: string;
+    name: string;
+    googleId: string;
+    picture: string;
+  }) {
+    const { email, name, googleId, picture } = googleUser;
+
+    let user = await this.userModel.findOne({ email }).exec();
+
+    if (user) {
+      // If user exists but used local auth previously, link Google ID
+      if (!user.google_id) {
+        user.google_id = googleId;
+        user.auth_type = 'google'; // Optional: Switch or support dual
+        await user.save();
+      }
+    } else {
+      // Create new user
+      console.log('Creating new Google user...');
+      user = new this.userModel({
+        email,
+        name,
+        google_id: googleId,
+        auth_type: 'google',
+        uid: uuidv4(),
+        profile_url: picture,
+        number: '0000000000', // Handle empty number as it's required in your schema, or make schema optional
+        role: 'user',
+        password: '', // No password for Google users
+      });
+      await user.save();
+
+      // Send welcome email if needed
+      await this.mailingService.sendWelcomeMail(user.email, user.name);
+    }
+
+    return user;
+  }
+
+  // Helper to generate token for OAuth redirect
+  async generateJwt(user: UserDocument) {
+    return this.jwtService.signAsync({
+      uid: user.uid,
+      role: user.role,
+    });
   }
 }
