@@ -1,5 +1,4 @@
 /* eslint-disable prettier/prettier */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
@@ -86,7 +85,7 @@ export class Product {
   details: string;
 
   @Field(() => [String], { nullable: true })
-  @Prop({ type: [String], required: false })
+  @Prop({ type: [String], required: false, default: [] })
   sizes: string[];
 
   @Field(() => [GalleryItem])

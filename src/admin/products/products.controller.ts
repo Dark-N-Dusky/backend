@@ -29,7 +29,8 @@ export class ProductsController {
   @UseInterceptors(AnyFilesInterceptor({ storage: memoryStorage() }))
   async createProduct(
     @UploadedFiles() files: Array<Express.Multer.File>,
-    @Body() body: Omit<CreateProductDto, 'media' | 'gallery'>,
+    @Body()
+    body: Omit<CreateProductDto, 'media' | 'gallery'> & { sizes?: string },
   ) {
     try {
       const mediaFiles = files.filter((file) => file.fieldname === 'media');
@@ -51,10 +52,25 @@ export class ProductsController {
       const allImageUrls = [...mediaUrls, ...galleryUrls];
       const galleryMapped = allImageUrls.map((url) => ({ image_url: url }));
 
+      // Parse sizes if it comes as a stringified JSON
+      let parsedSizes: string[] = [];
+      if (body.sizes) {
+        try {
+          parsedSizes =
+            typeof body.sizes === 'string'
+              ? (JSON.parse(body.sizes) as string[])
+              : body.sizes;
+        } catch (e) {
+          console.log(e);
+          parsedSizes = [];
+        }
+      }
+
       const dtoObject = {
         ...body,
         media: mediaUrls,
         gallery: galleryMapped,
+        sizes: parsedSizes,
         top_points: Number(body.top_points),
         price: Number(body.price),
         offer_price: Number(body.offer_price),
@@ -77,7 +93,8 @@ export class ProductsController {
   async updateProduct(
     @Param('id') id: string,
     @UploadedFiles() files: Array<Express.Multer.File>,
-    @Body() body: Omit<EditProductDto, 'media' | 'gallery'>,
+    @Body()
+    body: Omit<EditProductDto, 'media' | 'gallery'> & { sizes?: string },
   ) {
     try {
       const mediaFiles = files.filter((file) => file.fieldname === 'media');
@@ -97,10 +114,25 @@ export class ProductsController {
 
       const galleryMapped = galleryUrls.map((url) => ({ image_url: url }));
 
+      // Parse sizes if present
+      let parsedSizes: string[] | undefined = undefined;
+      if (body.sizes) {
+        try {
+          parsedSizes =
+            typeof body.sizes === 'string'
+              ? (JSON.parse(body.sizes) as string[])
+              : body.sizes;
+        } catch (e) {
+          console.log(e);
+          parsedSizes = [];
+        }
+      }
+
       const dtoObject = {
         ...body,
         ...(mediaUrls.length > 0 && { media: mediaUrls }),
         ...(galleryMapped.length > 0 && { gallery: galleryMapped }),
+        ...(parsedSizes !== undefined && { sizes: parsedSizes }),
         ...(body.top_points !== undefined && {
           top_points: Number(body.top_points),
         }),

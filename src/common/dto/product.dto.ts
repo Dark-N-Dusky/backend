@@ -1,6 +1,12 @@
 /* eslint-disable prettier/prettier */
-import { ApiProperty, PartialType } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { ApiProperty, ApiPropertyOptional, PartialType } from '@nestjs/swagger';
+import {
+  IsArray,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 export class CreateProductDto {
   @ApiProperty()
@@ -37,6 +43,12 @@ export class CreateProductDto {
   @IsNotEmpty()
   @IsNumber()
   top_points: number;
+
+  @ApiPropertyOptional({ type: [String] })
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  sizes?: string[];
 }
 
 export class EditProductDto extends PartialType(CreateProductDto) {}

@@ -54,4 +54,11 @@ export class Order {
     default: () => 'CURRENT_TIMESTAMP',
   })
   createdAt: Date;
+
+  @Column({
+    type: 'varchar',
+    nullable: true,
+    default: 'NA',
+  })
+  size: string;
 }

@@ -21,7 +21,7 @@ export class CartItemDto {
   @ApiPropertyOptional()
   @IsOptional()
   @IsString()
-  sizeSelected?: string
+  sizeSelected?: string;
 }
 
 export class EditCartItemDto {
@@ -46,4 +46,9 @@ export class CheckoutDto {
   @IsNotEmpty()
   @IsNumberString()
   address_id: string;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
+  sizeSelected?: string;
 }

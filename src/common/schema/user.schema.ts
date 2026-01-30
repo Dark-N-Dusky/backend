@@ -49,7 +49,7 @@ export class Address {
   type: 'home' | 'work';
 
   @Field({ nullable: true })
-  @Prop()
+  @Prop({ default: true })
   weekend_availability: boolean;
 }
 
@@ -71,6 +71,10 @@ export class CartItem {
   @Field()
   @Prop({ required: true })
   quantity: number;
+
+  @Field({ nullable: true })
+  @Prop({ required: false })
+  sizeSelected?: string;
 }
 
 @ObjectType()
