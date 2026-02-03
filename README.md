@@ -23,7 +23,7 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository. For D Z International
+[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository. For D Z International.
 
 ## Project setup
 
