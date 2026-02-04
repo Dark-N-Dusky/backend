@@ -55,10 +55,10 @@ export class Order {
   })
   createdAt: Date;
 
-  @Column({
-    type: 'varchar',
-    nullable: true,
-    default: 'NA',
-  })
-  size: string;
+  // @Column({
+  //   type: 'varchar',
+  //   nullable: true,
+  //   default: 'NA',
+  // })
+  // size: string;
 }

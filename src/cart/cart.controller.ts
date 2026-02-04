@@ -7,6 +7,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   Request,
   UseGuards,
 } from '@nestjs/common';
@@ -44,8 +45,12 @@ export class CartController {
   }
 
   @Delete(':id')
-  removeFromCart(@Request() req: JwtTokenPayload, @Param('id') id: string) {
-    return this.cartService.removeFromCart(req.user.uid, id);
+  removeFromCart(
+    @Request() req: JwtTokenPayload,
+    @Param('id') id: string,
+    @Query('sizeSelected') sizeSelected?: string,
+  ) {
+    return this.cartService.removeFromCart(req.user.uid, id, sizeSelected);
   }
 
   @Post('checkout')

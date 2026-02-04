@@ -29,6 +29,11 @@ export class CartService {
     private readonly orderItemRepository: Repository<OrderItem>,
   ) {}
 
+  private normalizeSize(size?: string | null) {
+    const trimmed = size?.trim();
+    return trimmed ? trimmed : 'NA';
+  }
+
   async getCartItems(uid: string) {
     const user = await this.userModel.findOne({ uid: uid }).exec();
     if (!user) {
@@ -45,14 +50,20 @@ export class CartService {
       throw new NotFoundException('Invalid credentials');
     }
 
+    const incomingSize = this.normalizeSize(body.sizeSelected);
     const existingItem = user.cart.find(
-      (item) => item.product_id.toString() === body.product_id.toString(),
+      (item) =>
+        item.product_id.toString() === body.product_id.toString() &&
+        this.normalizeSize(item.sizeSelected) === incomingSize,
     );
 
     if (existingItem) {
       existingItem.quantity++;
     } else {
-      user.cart.push(body);
+      user.cart.push({
+        ...body,
+        sizeSelected: incomingSize,
+      });
     }
 
     await user.save();
@@ -65,7 +76,13 @@ export class CartService {
       throw new NotFoundException('Invalid credentials');
     }
 
-    const cartItem = user.cart.find((item) => item.product_id === pid);
+    const targetSize = this.normalizeSize(body.sizeSelected);
+    const cartItem = user.cart.find(
+      (item) =>
+        item.product_id === pid &&
+        (targetSize === null ||
+          this.normalizeSize(item.sizeSelected) === targetSize),
+    );
     if (!cartItem) {
       throw new NotFoundException('Item not found in cart');
     }
@@ -77,13 +94,24 @@ export class CartService {
     return 'Cart updated successfully';
   }
 
-  async removeFromCart(uid: string, id: string) {
+  async removeFromCart(uid: string, id: string, sizeSelected?: string) {
     const user = await this.userModel.findOne({ uid: uid }).exec();
     if (!user) {
       throw new NotFoundException('Invalid credentials');
     }
 
-    const cartItemIndex = user.cart.findIndex((item) => item.product_id === id);
+    const targetSize = this.normalizeSize(sizeSelected);
+    const cartItemIndex = user.cart.findIndex((item) => {
+      if (item.product_id !== id) {
+        return false;
+      }
+
+      if (targetSize === null) {
+        return true;
+      }
+
+      return this.normalizeSize(item.sizeSelected) === targetSize;
+    });
     if (cartItemIndex === -1) {
       throw new NotFoundException('Item not found in cart');
     }
@@ -104,7 +132,7 @@ export class CartService {
       const quantity = body.quantity ? body.quantity : 1;
       const address = body.quantity ? body.address_id : 0;
       const pid = body.pid;
-      const size = body.sizeSelected;
+      const size = this.normalizeSize(body.sizeSelected);
       try {
         const item = await this.productModel.findOne({ pid: pid }).exec();
         if (!item) {
@@ -127,7 +155,7 @@ export class CartService {
         order_id: orderData.id,
         product_id: pid,
         quantity: quantity,
-        size: size || null,
+        selectedSize: size,
       };
 
       const orderItemData = await this.orderItemRepository.save(orderItem);
@@ -152,8 +180,9 @@ export class CartService {
       order_id: orderData.id,
       product_id: item.product_id,
       quantity: item.quantity,
-      size: item.sizeSelected || null,
+      selectedSize: this.normalizeSize(item.sizeSelected),
     }));
+    console.log(orderItems);
     const orderItemData = await this.orderItemRepository.save(orderItems);
 
     if (!orderItemData) {

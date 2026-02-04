@@ -18,7 +18,7 @@ export class OrderItem {
 
   @Column({
     type: 'varchar',
-    nullable: true
+    nullable: true,
   })
   selectedSize: string;
 

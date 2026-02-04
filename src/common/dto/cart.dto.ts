@@ -29,6 +29,11 @@ export class EditCartItemDto {
   @IsOptional()
   @IsNumberString()
   quantity?: number;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
+  sizeSelected?: string;
 }
 
 export class CheckoutDto {

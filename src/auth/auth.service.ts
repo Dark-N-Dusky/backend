@@ -66,7 +66,7 @@ export class AuthService {
     }
   }
 
-  async register(body: CreateUserDto) {
+  async register(body: CreateUserDto, @Res() res: Response) {
     const oldUser = await this.userModel.findOne({ email: body.email }).exec();
 
     if (!oldUser) {
@@ -81,7 +81,28 @@ export class AuthService {
       await newUser.save();
       await this.mailingService.sendWelcomeMail(newUser.email, newUser.name);
 
-      return { message: 'User created successfully' };
+      const { uid, name, email, role } = newUser.toObject();
+      const token = await this.jwtService.signAsync({
+        uid: newUser.uid,
+        role: newUser.role,
+      });
+
+      res.cookie('token', token, {
+        httpOnly: true,
+        secure: true,
+        maxAge: 24 * 60 * 60 * 1000,
+      });
+
+      res.setHeader('Authorization', `Bearer ${token}`);
+
+      return res.send({
+        message: 'User created successfully',
+        uid,
+        name,
+        email,
+        role,
+        token,
+      });
     } else {
       throw new ConflictException('Email already exists');
     }
