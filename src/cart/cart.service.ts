@@ -182,7 +182,6 @@ export class CartService {
       quantity: item.quantity,
       selectedSize: this.normalizeSize(item.sizeSelected),
     }));
-    console.log(orderItems);
     const orderItemData = await this.orderItemRepository.save(orderItems);
 
     if (!orderItemData) {

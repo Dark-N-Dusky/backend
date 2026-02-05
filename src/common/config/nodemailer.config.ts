@@ -5,7 +5,6 @@ import { ConfigService } from '@nestjs/config';
 import * as path from 'path';
 
 export const NodemailerConfig = (configService: ConfigService) => {
-  console.log('something');
   return {
     transport: {
       host: configService.get<string>('EMAIL_HOST'),

@@ -180,15 +180,12 @@ export class AuthService {
     let user = await this.userModel.findOne({ email }).exec();
 
     if (user) {
-      // If user exists but used local auth previously, link Google ID
       if (!user.google_id) {
         user.google_id = googleId;
-        user.auth_type = 'google'; // Optional: Switch or support dual
+        user.auth_type = 'google';
         await user.save();
       }
     } else {
-      // Create new user
-      console.log('Creating new Google user...');
       user = new this.userModel({
         email,
         name,
@@ -196,20 +193,18 @@ export class AuthService {
         auth_type: 'google',
         uid: uuidv4(),
         profile_url: picture,
-        number: '0000000000', // Handle empty number as it's required in your schema, or make schema optional
+        number: '0000000000',
         role: 'user',
-        password: '', // No password for Google users
+        password: '',
       });
       await user.save();
 
-      // Send welcome email if needed
       await this.mailingService.sendWelcomeMail(user.email, user.name);
     }
 
     return user;
   }
 
-  // Helper to generate token for OAuth redirect
   async generateJwt(user: UserDocument) {
     return this.jwtService.signAsync({
       uid: user.uid,
