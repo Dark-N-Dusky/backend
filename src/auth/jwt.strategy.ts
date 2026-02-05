@@ -8,6 +8,11 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(private readonly configService: ConfigService) {
+    const jwtSecret = configService.get<string>('JWT_SECRET');
+    if (!jwtSecret) {
+      throw new Error('JWT Secret not present');
+    }
+
     super({
       jwtFromRequest: (req: Request) => {
         let token = ExtractJwt.fromAuthHeaderAsBearerToken()(req);
@@ -26,7 +31,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         return token;
       },
       ignoreExpiration: false,
-      secretOrKey: 'secret',
+      secretOrKey: jwtSecret,
     });
   }
 
