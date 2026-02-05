@@ -34,6 +34,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     if (!payload.uid) {
       throw new UnauthorizedException('Invalid token payload');
     }
+    console.log('Validated', payload.uid);
 
     return { uid: payload.uid };
   }
