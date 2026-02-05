@@ -22,6 +22,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
             },
           ])(req);
         }
+        console.log(token);
         return token;
       },
       ignoreExpiration: false,
