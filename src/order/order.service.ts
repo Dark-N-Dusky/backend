@@ -1,8 +1,16 @@
 /* eslint-disable prettier/prettier */
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
-import { Order } from 'src/common/entity/order.entity';
+import {
+  Order,
+  OrderStatus,
+  TrackingStatus,
+} from 'src/common/entity/order.entity';
 import { OrderItem } from 'src/common/entity/orderItem.entity';
 import { Repository } from 'typeorm';
 
@@ -50,5 +58,35 @@ export class OrderService {
     };
 
     return order;
+  }
+
+  async cancelOrder(id: number, uid: string) {
+    const order = await this.orderRepository.findOne({ where: { id, uid } });
+    if (!order) throw new NotFoundException('Order not found!');
+
+    if (order.status === OrderStatus.CANCELLED) {
+      throw new BadRequestException('Order already cancelled');
+    }
+
+    const nonCancelableTracking = [
+      TrackingStatus.SHIPPED,
+      TrackingStatus.DELIVERY,
+      TrackingStatus.DELIVERED,
+    ];
+
+    if (nonCancelableTracking.includes(order.tracking_status as TrackingStatus)) {
+      throw new BadRequestException('Order already shipped');
+    }
+
+    await this.orderRepository.update(
+      { id, uid },
+      { status: OrderStatus.CANCELLED },
+    );
+
+    const updatedOrder = await this.orderRepository.findOne({
+      where: { id, uid },
+    });
+
+    return updatedOrder;
   }
 }

@@ -125,6 +125,9 @@ export class AdminService {
     const orders = await this.orderRepository.findAndCount({
       take: limit,
       skip: offset,
+      order: {
+        createdAt: 'DESC',
+      },
     });
 
     if (!orders) {

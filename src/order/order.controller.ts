@@ -4,6 +4,7 @@ import {
   Controller,
   Get,
   Param,
+  Patch,
   Post,
   Query,
   Request,
@@ -36,5 +37,11 @@ export class OrderController {
   @Get(':id')
   getOrderById(@Param('id') id: number) {
     return this.orderService.getOrderById(id);
+  }
+
+  @Patch(':id/cancel')
+  cancelOrder(@Param('id') id: number, @Request() req: JwtTokenPayload) {
+    console.log('got');
+    return this.orderService.cancelOrder(id, req.user.uid);
   }
 }
