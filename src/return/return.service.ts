@@ -25,7 +25,7 @@ export class ReturnService {
   async getReturns(uid: string) {
     const returns = await this.returnRepository.find({ where: { uid } });
     if (!returns || returns.length === 0) {
-      return 'No returns found';
+      return [];
     }
 
     return returns;
