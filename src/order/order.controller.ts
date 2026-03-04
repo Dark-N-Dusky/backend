@@ -41,7 +41,6 @@ export class OrderController {
 
   @Patch(':id/cancel')
   cancelOrder(@Param('id') id: number, @Request() req: JwtTokenPayload) {
-    console.log('got');
     return this.orderService.cancelOrder(id, req.user.uid);
   }
 }

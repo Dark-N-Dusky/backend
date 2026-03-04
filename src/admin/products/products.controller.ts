@@ -60,8 +60,7 @@ export class ProductsController {
             typeof body.sizes === 'string'
               ? (JSON.parse(body.sizes) as string[])
               : body.sizes;
-        } catch (e) {
-          console.log(e);
+        } catch {
           parsedSizes = [];
         }
       }
@@ -122,8 +121,7 @@ export class ProductsController {
             typeof body.sizes === 'string'
               ? (JSON.parse(body.sizes) as string[])
               : body.sizes;
-        } catch (e) {
-          console.log(e);
+        } catch {
           parsedSizes = [];
         }
       }
